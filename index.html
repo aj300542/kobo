@@ -7,9 +7,9 @@
     <style>
         @font-face {
             font-family: 'DSEG07modern';
-            src: url('fonts/DSEG7Modern-Light.woff2') format('woff2'),
-                url('fonts/DSEG7Modern-Light.woff') format('woff'),
-                url('fonts/DSEG7Modern-Light.ttf') format('truetype');
+            src: url('fonts/DSEG14Classic-BoldItalic.woff2') format('woff2'),
+                url('fonts/DSEG14Classic-BoldItalic.woff') format('woff'),
+                url('fonts/DSEG14Classic-BoldItalic.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -19,7 +19,7 @@
             width: 100%;
             height: 100vh;
             display: block;
-            text-align: center;           
+            text-align: center;
             background-color: #ffffff;
             color: rgb(0, 0, 0);
             font-family: 'DSEG07modern', Arial, sans-serif;
@@ -27,6 +27,7 @@
             margin: 0;
             padding: 0;
         }
+
         body::before {
             content: '';
             display: inline-block;
@@ -43,7 +44,7 @@
         #content {
             position: relative;
             width: 100%;
-            height: 100%;
+            //*height: 100%;*//
             display: block;
             text-align: center;
         }
@@ -51,7 +52,7 @@
         #content::before {
             content: '';
             display: inline-block;
-            height: 100%;
+            //*height: 100%;*//
             vertical-align: middle;
             margin-right: -0.25em;
         }
@@ -59,6 +60,31 @@
         #content>div {
             display: inline-block;
             vertical-align: middle;
+        }
+    </style>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        .day,
+        .weekday {
+            font-size: 18px;
+            /* 修改这里 */
+            display: table-cell;
+            padding: 0.0em;
+            /* 修改这里 */
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .today {
+            background-color: #ff0;
+        }
+
+        #calendar {
+            width: 300px;
+            height: 250px;
         }
     </style>
     <style>
@@ -121,6 +147,7 @@
         }
 
     </script>
+
     <style>
         @font-face {
             font-family: "D7MI";
@@ -225,23 +252,47 @@
                 <span id="DSEGClock-Year" class="Clock-Year-Front"><span class="D7MI">2024-04-11 </span><span
                         class="D14MI">thu.</span></span>
             </div>
+            <table id="calendar"></table>
+
         </div>
-
-
-
         <script>
-            var angle = 0;  // 初始化旋转角度为0
-            function rotate() {
-                angle += 90;  // 每次点击增加90度
-                var content = document.getElementById('content');
-                content.style.transform = 'rotate(' + angle + 'deg)';
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const date = new Date();
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const today = date.getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const calendar = document.getElementById('calendar');
+            let weekRow = document.createElement('tr');
+            for (let i = 0; i < 7; i++) {
+                const weekday = document.createElement('td');
+                weekday.classList.add('weekday');
+                weekday.textContent = weekdays[i];
+                weekRow.appendChild(weekday);
             }
+            calendar.appendChild(weekRow);
+
+            weekRow = document.createElement('tr');
+            for (let i = 0; i < firstDay; i++) {
+                weekRow.appendChild(document.createElement('td'));
+            }
+            for (let i = 1; i <= daysInMonth; i++) {
+                if (weekRow.children.length === 7) {
+                    calendar.appendChild(weekRow);
+                    weekRow = document.createElement('tr');
+                }
+                const day = document.createElement('td');
+                day.classList.add('day');
+                day.textContent = i;
+                if (i === today) {
+                    day.classList.add('today');
+                }
+                weekRow.appendChild(day);
+            }
+            calendar.appendChild(weekRow);
         </script>
-
-
-
-
-
     </body>
 
 </html>
