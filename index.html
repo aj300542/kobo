@@ -44,7 +44,7 @@
         #content {
             position: relative;
             width: 100%;
-            //*height: 100%;*//
+            /*height: 100%;*/
             display: block;
             text-align: center;
         }
@@ -52,7 +52,7 @@
         #content::before {
             content: '';
             display: inline-block;
-            //*height: 100%;*//
+            /*height: 100%;*/
             vertical-align: middle;
             margin-right: -0.25em;
         }
@@ -65,16 +65,17 @@
     <style>
         table {
             margin: auto;
+            border-spacing: 0;
         }
 
         .day,
         .weekday {
             font-size: 18px;
-            /* 修改这里 */
+
             display: table-cell;
             padding: 0.0em;
-            /* 修改这里 */
-            border: 1px solid #ccc;
+
+            border: 0px solid #000000;
             text-align: center;
         }
 
@@ -83,13 +84,28 @@
         }
 
         #calendar {
-            width: 300px;
+            width: 320px;
             height: 250px;
+        }
+
+        #timeElement {
+            text-align: center;
         }
     </style>
     <style>
         #content {
             transition: transform 2s;
+        }
+
+        #content>div {
+            display: block;
+            clear: both;
+            margin: auto;
+        }
+
+        #content>div:first-child {
+            margin-bottom: 10px;
+            /* 调整这个值来改变间隙大小 */
         }
     </style>
     <script>
@@ -189,9 +205,22 @@
 
         .Clock-Wrapper {
             position: relative;
-            border: 4px solid #000;
+            border: 4px solid #0c0c0c;
             border-radius: 6px;
             height: 130px;
+            width: 320px;
+            background-color: #ffffff;
+            line-height: 2vh;
+            box-shadow: 4px 4px 1px 0px rgba(0, 0, 0, 0.1) inset;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .calendar-Wrapper {
+            position: relative;
+            border: 4px solid #0c0c0c;
+            border-radius: 6px;
+            height: 250px;
             width: 320px;
             background-color: #ffffff;
             line-height: 2vh;
@@ -241,9 +270,8 @@
 <body>
 
     <body onload="updateTimer()">
-        <div id="MathJax_Message" style="display: none;"></div>
 
-        <div id="content" onclick="rotate()">
+        <div id="content" >
             <div class="Clock-Wrapper">
                 <span class="Clock-Time-Background D7MBI">88:88<span style="font-size:30px;">88</span></span>
                 <span id="DSEGClock" class="Clock-Time-Front D7MBI">19 06<span style="font-size:30px;">25</span></span>
@@ -252,9 +280,11 @@
                 <span id="DSEGClock-Year" class="Clock-Year-Front"><span class="D7MI">2024-04-11 </span><span
                         class="D14MI">thu.</span></span>
             </div>
-            <table id="calendar"></table>
-
+            <div class="calendar-Wrapper">
+                <table id="calendar"></table>
+            </div>
         </div>
+
         <script>
             const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const date = new Date();
@@ -293,6 +323,31 @@
             }
             calendar.appendChild(weekRow);
         </script>
+        <script>
+            function changeColor() {
+                var clockWrapper = document.querySelector('.Clock-Wrapper');
+                var calendarWrapper = document.querySelector('.calendar-Wrapper');
+                var bodyStyle = window.getComputedStyle(document.body);
+
+                // 检测背景色是否为黑色
+                if (bodyStyle.backgroundColor === 'rgb(0, 0, 0)') {
+                    // 如果当前背景色为黑色，切换到原始颜色方案
+                    clockWrapper.style.backgroundColor = '';
+                    calendarWrapper.style.backgroundColor = '';
+                    document.body.style.backgroundColor = '';
+                } else {
+                    // 如果当前背景色不是黑色，切换到黑色方案
+                    clockWrapper.style.backgroundColor = '#fb7c00';
+                    calendarWrapper.style.backgroundColor = '#fb7c00';
+                    document.body.style.backgroundColor = 'black';
+                }
+            }
+
+            var content = document.getElementById('content');
+            content.addEventListener('click', changeColor);
+
+        </script>
     </body>
+
 
 </html>
